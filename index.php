@@ -68,8 +68,8 @@ $app->post('/', function ($request, $response)
 
 			if($event['type'] == 'follow')
 			{
-				$welcomeMsg = "Hi ho, salam kenal ya " . $event['source']['userId']['displayName']
-				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
+				$welcomeMsg = "Hi ho, salam kenal ya " . $event['source']['userId']['displayName'];
+				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($welcomeMsg);
 				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
 				// $sql = 'INSERT INTO user';
 				// $db->query($sql);
