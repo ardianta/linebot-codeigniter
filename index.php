@@ -42,6 +42,13 @@ $app->post('/', function ($request, $response)
 	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
 	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
 
+	// init database
+	$host = $_ENV['DBHOST'];
+	$dbname = $_ENV['DBNAME'];
+	$dbuser = $_ENV['DBUSER'];
+	$dbpass = $_ENV['DBPASS'];
+	$db = new PDO("pgsql:host='$host';dbname=$dbname", $dbuser, $dbpass);
+
 	$data = json_decode($body, true);
 	foreach ($data['events'] as $event)
 	{
@@ -50,13 +57,22 @@ $app->post('/', function ($request, $response)
 			if($event['message']['type'] == 'text')
 			{
 				// send same message as reply to user
-				$result = $bot->replyText($event['replyToken'], $event['message']['text']);
+				// $result = $bot->replyText($event['replyToken'], $event['message']['text'] );
 
 				// or we can use pushMessage() instead to send reply message
-				// $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
-				// $result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
+				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
 
 				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+			}
+
+			if($event['type'] == 'follow')
+			{
+				$welcomeMsg = "Hi ho, salam kenal ya " . $event['source']['userId']['displayName']
+				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
+				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+				$sql = 'INSERT INTO user';
+				$db->query($sql);
 			}
 		}
 	}
