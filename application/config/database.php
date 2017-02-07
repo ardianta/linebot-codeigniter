@@ -80,7 +80,7 @@ $db['default'] = array(
 	'username' => $_ENV['DBUSER'],
 	'password' => $_ENV['DBPASS'],
 	'database' => $_ENV['DBNAME'],
-	'dbdriver' => 'postgres',
+	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
