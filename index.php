@@ -71,12 +71,19 @@ $app->post('/', function ($request, $response)
 
 		if($event['type'] == 'follow')
 		{
-			$welcomeMsg = "Hi ho, salam kenal ya " . $event['source']['userId']['displayName'];
-			$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($welcomeMsg);
-			$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
-			// $sql = 'INSERT INTO user';
-			// $db->query($sql);
-			return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+			$res = $event['source']['userId'];
+			if ($res->isSucceeded())
+		    {
+		        $profile = $res->getJSONDecodedBody();
+		        // save user data
+
+				$welcomeMsg = "Hi ho, salam kenal ya " . $profile['displayName'];
+				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($welcomeMsg);
+				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
+				// $sql = 'INSERT INTO user';
+				// $db->query($sql);
+				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+			}
 		}
 	}
 
