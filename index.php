@@ -71,8 +71,9 @@ $app->post('/', function ($request, $response)
 				$welcomeMsg = "Hi ho, salam kenal ya " . $event['source']['userId']['displayName']
 				$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
 				$result = $bot->pushMessage($event['source']['userId'], $textMessageBuilder);
-				$sql = 'INSERT INTO user';
-				$db->query($sql);
+				// $sql = 'INSERT INTO user';
+				// $db->query($sql);
+				return $result->getHTTPStatus() . ' ' . $result->getRawBody();
 			}
 		}
 	}
