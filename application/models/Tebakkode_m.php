@@ -14,5 +14,7 @@ class Tebakkode_m extends CI_Model {
     ->insert('eventlog');
 
     return $this->db->insert_id();
+
+    echo $body;
   }
 }
