@@ -15,6 +15,7 @@ class Tebakkode_m extends CI_Model {
 
     return $this->db->insert_id();
 
-    echo $body;
+    // tampilkan error logs
+    file_put_contents('php://stderr', 'Body: '.$body);
   }
 }
