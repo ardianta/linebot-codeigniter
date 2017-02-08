@@ -22,6 +22,10 @@ class Webhook extends CI_Controller
     {
         parent::__construct();
         $this->load->model('tebakkode_m');
+
+        // create bot object
+        $httpClient = new CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
+        $this->bot  = new LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
     }
 
     public function index()
@@ -77,6 +81,12 @@ class Webhook extends CI_Controller
               $profile = $res->getJSONDecodedBody();
               // save user data
               $this->tebakkode_m->saveUser($profile);
+
+              // send welcome message
+                $message = "Salam kenal, " . $profile['displayName'] . "!\n";
+                $message .= "Silakan kirim pesan \"MULAI\" untuk memulai kuis.";
+                $textMessageBuilder = new TextMessageBuilder($message);
+                $this->bot->pushMessage($event['source']['userId'], $textMessageBuilder);
           }
 
       }
