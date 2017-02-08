@@ -18,4 +18,5 @@ class Tebakkode_m extends CI_Model {
     // tampilkan error logs
     error_log($body);
   }
+
 }
